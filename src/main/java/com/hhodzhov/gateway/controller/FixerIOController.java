@@ -13,9 +13,9 @@ import constants.Endpoints;
 public class FixerIOController {
 
     private final FixerIOService fixerIOService;
-
-    @GetMapping(Endpoints.FIXER_DATA)
-    public ResponseEntity<?> getRealTimeDataFromFixerIO() {
-        return fixerIOService.getRealTimeData();
-    }
+//
+//    @GetMapping(Endpoints.FIXER_DATA)
+//    public ResponseEntity<?> getRealTimeDataFromFixerIO() {
+//        return fixerIOService.getRealTimeData();
+//    }
 }

@@ -1,7 +1,7 @@
 package com.hhodzhov.gateway.service;
 
 import static constants.General.DATE_TIME_PATTERN;
-import com.hhodzhov.gateway.FixerIoRepository;
+import com.hhodzhov.gateway.FixerIoCustomRepository;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
 import com.hhodzhov.gateway.model.Currency;
 import org.modelmapper.ModelMapper;
@@ -15,27 +15,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import constants.Endpoints;
 
 @Service
-@RequiredArgsConstructor
-public class FixerIOServiceImpl implements FixerIOService {
+@Setter
+public class FixerIoServiceImpl implements FixerIOService {
 
-    @Value("${fixer.key}")
-    private String fixerAccessKey;
+    private final ModelMapper modelMapper;
+    private final FixerIoCustomRepository fixerIoCustomRepository;
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    private final ModelMapper modelMapper;
+    //TODO :: check why this property is always null
+    @Value("${fixer.key}")
+    private String fixerAccessKey;
 
-    private final FixerIoRepository fixerIoRepository;
+    public FixerIoServiceImpl(ModelMapper modelMapper, FixerIoCustomRepository fixerIoCustomRepository) {
+        this.modelMapper = modelMapper;
+        this.fixerIoCustomRepository = fixerIoCustomRepository;
+    }
 
     @Override
-    public ResponseEntity<?> getRealTimeData() {
+    public void refreshDataFromFixerIo() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Accept", "*/*");
@@ -48,16 +53,15 @@ public class FixerIOServiceImpl implements FixerIOService {
                 builder.toUriString(),
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<CurrencyDTO>(){});
+                new ParameterizedTypeReference<CurrencyDTO>() {
+                });
 
         CurrencyDTO currencyDTO = response.getBody();
 
         if (currencyDTO != null) {
             Currency currency = createCurrency(currencyDTO);
-            fixerIoRepository.save(currency);
+            fixerIoCustomRepository.persist(currency);
         }
-
-        return response;
     }
 
     private Currency createCurrency(CurrencyDTO currencyDTO) {
