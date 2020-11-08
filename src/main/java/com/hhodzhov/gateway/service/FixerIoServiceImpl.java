@@ -1,7 +1,7 @@
 package com.hhodzhov.gateway.service;
 
 import static constants.General.DATE_TIME_PATTERN;
-import com.hhodzhov.gateway.FixerIoCustomRepository;
+import com.hhodzhov.gateway.repository.FixerIoCustomRepository;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
 import com.hhodzhov.gateway.model.Currency;
 import org.modelmapper.ModelMapper;

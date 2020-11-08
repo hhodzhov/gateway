@@ -1,4 +1,4 @@
-package com.hhodzhov.gateway;
+package com.hhodzhov.gateway.repository;
 
 import com.hhodzhov.gateway.model.Currency;
 import org.hibernate.Session;

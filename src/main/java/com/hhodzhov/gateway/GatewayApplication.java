@@ -1,5 +1,6 @@
 package com.hhodzhov.gateway;
 
+import com.hhodzhov.gateway.repository.FixerIoCustomRepository;
 import com.hhodzhov.gateway.service.FixerIOService;
 import com.hhodzhov.gateway.service.FixerIoServiceImpl;
 import com.hhodzhov.gateway.service.FixerIoTimerTask;
