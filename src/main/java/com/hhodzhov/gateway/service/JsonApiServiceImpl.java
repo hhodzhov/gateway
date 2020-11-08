@@ -35,7 +35,7 @@ public class JsonApiServiceImpl implements JsonApiService {
     @Override
     public List<Currency> getCurrencyHistory(JsonApiHistoryPayload jsonApiHistoryPayload) {
 
-        //add logic for getting the current info
+        //add logic for getting history
 
         /*
 
