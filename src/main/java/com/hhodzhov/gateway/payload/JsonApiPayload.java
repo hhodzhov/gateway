@@ -3,18 +3,24 @@ package com.hhodzhov.gateway.payload;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hhodzhov.gateway.enumeration.BaseRate;
 import lombok.Data;
+import javax.validation.constraints.NotNull;
 
 @Data
-public class JsonApiHistoryPayload {
+public class JsonApiPayload {
 
+    @NotNull(message = "Request Id cannot be null")
     private String requestId;
 
-    private long timestamp;
-
+    @NotNull(message = "Client cannot be null")
     @JsonProperty("client")
     private String clientId;
 
+    @NotNull(message = "Currency cannot be null")
     private BaseRate currency;
 
+    @NotNull(message = "Timestamp cannot be null")
+    private long timestamp;
+
     private int period;
+
 }

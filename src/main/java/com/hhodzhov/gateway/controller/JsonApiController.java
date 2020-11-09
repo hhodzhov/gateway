@@ -1,11 +1,9 @@
 package com.hhodzhov.gateway.controller;
 
+import com.hhodzhov.gateway.converter.JsonApiConverter;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
-import com.hhodzhov.gateway.model.Currency;
-import com.hhodzhov.gateway.payload.JsonApiCurrentPayload;
-import com.hhodzhov.gateway.payload.JsonApiHistoryPayload;
+import com.hhodzhov.gateway.payload.JsonApiPayload;
 import com.hhodzhov.gateway.service.JsonApiService;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,22 +18,19 @@ import constants.Endpoints;
 @RequiredArgsConstructor
 public class JsonApiController {
 
-    private final ModelMapper modelMapper;
     private final JsonApiService jsonApiService;
+    private final JsonApiConverter jsonApiConverter;
 
     @PostMapping(Endpoints.JSON_API_CURRENT)
-    public CurrencyDTO getCurrentInfo(@RequestBody JsonApiCurrentPayload jsonApiCurrentPayload) {
-        Currency currentInfo = jsonApiService.getCurrentInfo(jsonApiCurrentPayload);
-        CurrencyDTO result = modelMapper.map(currentInfo, CurrencyDTO.class);
-        result.setDateOfRate(currentInfo.getRate().getDateReceived().toString());
-        return result;
+    public CurrencyDTO getCurrentInfo(@RequestBody JsonApiPayload jsonApiPayload) {
+        return jsonApiConverter.convert(jsonApiService.getCurrentInfo(jsonApiPayload));
     }
 
     @PostMapping(Endpoints.JSON_API_HISTORY)
-    public List<CurrencyDTO> getHistory(@RequestBody JsonApiHistoryPayload jsonApiHistoryPayload) {
-        return jsonApiService.getCurrencyHistory(jsonApiHistoryPayload)
+    public List<CurrencyDTO> getHistory(@RequestBody JsonApiPayload jsonApiPayload) {
+        return jsonApiService.getCurrencyHistory(jsonApiPayload)
                 .stream()
-                .map(history -> modelMapper.map(history, CurrencyDTO.class))
+                .map(jsonApiConverter::convert)
                 .collect(Collectors.toList());
     }
 }

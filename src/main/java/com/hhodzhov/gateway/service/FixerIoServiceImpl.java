@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,6 +43,11 @@ public class FixerIoServiceImpl implements FixerIOService {
     @Override
     public Optional<Currency> getLatestInfo(BaseRate baseRate) {
         return fixerIoRepository.getLatestInfoByBaseRate(baseRate.toString());
+    }
+
+    @Override
+    public List<Currency> getHistoryByHours(BaseRate baseRate, int hours) {
+        return fixerIoRepository.getCurrencyHistoryByHours(baseRate.toString(), hours);
     }
 
     private Currency createCurrency(CurrencyDTO currencyDTO) {

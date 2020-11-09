@@ -3,8 +3,7 @@ package com.hhodzhov.gateway.service;
 import com.hhodzhov.gateway.exception.ApiException;
 import com.hhodzhov.gateway.model.ClientRequest;
 import com.hhodzhov.gateway.model.Currency;
-import com.hhodzhov.gateway.payload.JsonApiCurrentPayload;
-import com.hhodzhov.gateway.payload.JsonApiHistoryPayload;
+import com.hhodzhov.gateway.payload.JsonApiPayload;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,43 +23,40 @@ public class JsonApiServiceImpl implements JsonApiService {
 
     @Override
     @Transactional
-    public Currency getCurrentInfo(JsonApiCurrentPayload jsonApiCurrentPayload) {
-        if (clientRequestService.existsByRequestId(jsonApiCurrentPayload.getRequestId())) {
-            throw new ApiException("Request with id: " + jsonApiCurrentPayload.getRequestId() + " already exists");
-        }
+    public Currency getCurrentInfo(JsonApiPayload jsonApiPayload) {
+        validateRequestId(jsonApiPayload.getRequestId());
 
-        createClientRequest(jsonApiCurrentPayload);
+        createClientRequest(jsonApiPayload);
 
-        return fixerIOService.getLatestInfo(jsonApiCurrentPayload.getCurrency())
+        return fixerIOService.getLatestInfo(jsonApiPayload.getCurrency())
                 .orElseThrow(() -> new ApiException("No such info exist with currency:"
-                        + jsonApiCurrentPayload.getCurrency().toString()));
+                        + jsonApiPayload.getCurrency().toString()));
     }
 
-    private void createClientRequest(JsonApiCurrentPayload jsonApiCurrentPayload) {
-        ClientRequest clientRequest = modelMapper.map(jsonApiCurrentPayload, ClientRequest.class);
+    @Override
+    public List<Currency> getCurrencyHistory(JsonApiPayload jsonApiPayload) {
+        validateRequestId(jsonApiPayload.getRequestId());
+
+        createClientRequest(jsonApiPayload);
+
+        return fixerIOService.getHistoryByHours(jsonApiPayload.getCurrency(), jsonApiPayload.getPeriod());
+    }
+
+
+    private void createClientRequest(JsonApiPayload jsonApiPayload) {
+        ClientRequest clientRequest = modelMapper.map(jsonApiPayload, ClientRequest.class);
 
         LocalDateTime requestDate =
-                LocalDateTime.ofInstant(Instant.ofEpochSecond(jsonApiCurrentPayload.getTimestamp()),
+                LocalDateTime.ofInstant(Instant.ofEpochSecond(jsonApiPayload.getTimestamp()),
                         TimeZone.getDefault().toZoneId());
         clientRequest.setRequestDate(requestDate);
 
         clientRequestService.save(clientRequest);
     }
 
-    @Override
-    public List<Currency> getCurrencyHistory(JsonApiHistoryPayload jsonApiHistoryPayload) {
-
-        //add logic for getting history
-
-        /*
-
-        1 - check why you will need the client id
-        2 - check why you will need the timestamp
-        3 - check the request id for the duplication of requests - investigate this
-        4 - when everything is clear just make a query to DB with given parameters and return the result
-
-         */
-
-        return null;
+    private void validateRequestId(String requestId) {
+        if (clientRequestService.existsByRequestId(requestId)) {
+            throw new ApiException("Request with id: " + requestId + " already exists");
+        }
     }
 }
