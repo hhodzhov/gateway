@@ -3,6 +3,7 @@ package com.hhodzhov.gateway.service;
 import static constants.General.DATE_TIME_PATTERN;
 import com.hhodzhov.gateway.client.FixerIOClient;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
+import com.hhodzhov.gateway.enumeration.BaseRate;
 import com.hhodzhov.gateway.model.Currency;
 import com.hhodzhov.gateway.repository.FixerIoRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @Setter
@@ -35,6 +37,11 @@ public class FixerIoServiceImpl implements FixerIOService {
             Currency currency = createCurrency(currencyDTO);
             fixerIoRepository.save(currency);
         }
+    }
+
+    @Override
+    public Optional<Currency> getLatestInfo(BaseRate baseRate) {
+        return fixerIoRepository.getLatestInfoByBaseRate(baseRate.toString());
     }
 
     private Currency createCurrency(CurrencyDTO currencyDTO) {

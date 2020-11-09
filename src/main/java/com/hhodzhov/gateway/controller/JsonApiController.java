@@ -25,7 +25,10 @@ public class JsonApiController {
 
     @PostMapping(Endpoints.JSON_API_CURRENT)
     public CurrencyDTO getCurrentInfo(@RequestBody JsonApiCurrentPayload jsonApiCurrentPayload) {
-        return modelMapper.map(jsonApiService.getCurrentInfo(jsonApiCurrentPayload), CurrencyDTO.class);
+        Currency currentInfo = jsonApiService.getCurrentInfo(jsonApiCurrentPayload);
+        CurrencyDTO result = modelMapper.map(currentInfo, CurrencyDTO.class);
+        result.setDateOfRate(currentInfo.getRate().getDateReceived().toString());
+        return result;
     }
 
     @PostMapping(Endpoints.JSON_API_HISTORY)
@@ -34,6 +37,5 @@ public class JsonApiController {
                 .stream()
                 .map(history -> modelMapper.map(history, CurrencyDTO.class))
                 .collect(Collectors.toList());
-
     }
 }
