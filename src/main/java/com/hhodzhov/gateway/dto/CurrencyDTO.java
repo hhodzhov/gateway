@@ -1,7 +1,7 @@
 package com.hhodzhov.gateway.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hhodzhov.gateway.enumeration.Base;
+import com.hhodzhov.gateway.enumeration.BaseRate;
 import lombok.Data;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,7 +13,8 @@ public class CurrencyDTO {
     private String dateOfRate;
 
     @Enumerated(EnumType.STRING)
-    private Base base;
+    @JsonProperty("base")
+    private BaseRate baseRate;
 
     @JsonProperty("rates")
     private RateDTO rate;

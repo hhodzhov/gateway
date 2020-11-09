@@ -1,7 +1,7 @@
 package com.hhodzhov.gateway.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hhodzhov.gateway.enumeration.Base;
+import com.hhodzhov.gateway.enumeration.BaseRate;
 import lombok.Data;
 
 @Data
@@ -12,7 +12,7 @@ public class JsonApiCurrentPayload {
     @JsonProperty("client")
     private String clientId;
 
-    private Base currency;
+    private BaseRate currency;
 
     private long timestamp;
 }

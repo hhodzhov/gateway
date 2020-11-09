@@ -1,6 +1,6 @@
 package com.hhodzhov.gateway.model;
 
-import com.hhodzhov.gateway.enumeration.Base;
+import com.hhodzhov.gateway.enumeration.BaseRate;
 import lombok.Data;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,7 +21,7 @@ public class Currency {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Base base;
+    private BaseRate baseRate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rateId", nullable = false)

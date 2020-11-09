@@ -1,5 +1,5 @@
 package com.hhodzhov.gateway.enumeration;
 
-public enum Base {
+public enum BaseRate {
     EUR
 }
