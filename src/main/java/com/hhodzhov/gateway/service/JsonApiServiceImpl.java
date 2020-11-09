@@ -19,7 +19,7 @@ public class JsonApiServiceImpl implements JsonApiService {
 
     private final ClientRequestService clientRequestService;
     private final ModelMapper modelMapper;
-    private final FixerIOService fixerIOService;
+    private final CurrencyService currencyService;
 
     @Override
     @Transactional
@@ -28,7 +28,7 @@ public class JsonApiServiceImpl implements JsonApiService {
 
         createClientRequest(jsonApiPayload);
 
-        return fixerIOService.getLatestInfo(jsonApiPayload.getCurrency())
+        return currencyService.getLatestInfo(jsonApiPayload.getCurrency())
                 .orElseThrow(() -> new ApiException("No such info exist with currency:"
                         + jsonApiPayload.getCurrency().toString()));
     }
@@ -39,7 +39,7 @@ public class JsonApiServiceImpl implements JsonApiService {
 
         createClientRequest(jsonApiPayload);
 
-        return fixerIOService.getHistoryByHours(jsonApiPayload.getCurrency(), jsonApiPayload.getPeriod());
+        return currencyService.getHistoryByHours(jsonApiPayload.getCurrency(), jsonApiPayload.getPeriod());
     }
 
 

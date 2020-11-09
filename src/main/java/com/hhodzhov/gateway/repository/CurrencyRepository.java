@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FixerIoRepository extends JpaRepository<Currency, Long> {
+public interface CurrencyRepository extends JpaRepository<Currency, Long> {
 
     @Query(value = "select * from currency curr "
             + "        join rate r on curr.rate_id = r.id "

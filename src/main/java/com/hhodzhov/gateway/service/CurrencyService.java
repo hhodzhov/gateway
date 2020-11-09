@@ -5,7 +5,7 @@ import com.hhodzhov.gateway.model.Currency;
 import java.util.List;
 import java.util.Optional;
 
-public interface FixerIOService {
+public interface CurrencyService {
     void refreshDataFromFixerIo();
 
     Optional<Currency> getLatestInfo(BaseRate baseRate);

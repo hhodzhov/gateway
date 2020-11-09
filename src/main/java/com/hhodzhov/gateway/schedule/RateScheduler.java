@@ -1,22 +1,22 @@
 package com.hhodzhov.gateway.schedule;
 
-import com.hhodzhov.gateway.service.FixerIOService;
+import com.hhodzhov.gateway.service.CurrencyService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
 public class RateScheduler {
-    private FixerIOService fixerIOService;
+    private CurrencyService currencyService;
 
-    public RateScheduler(final FixerIOService fixerIOService) {
-        this.fixerIOService = fixerIOService;
+    public RateScheduler(final CurrencyService currencyService) {
+        this.currencyService = currencyService;
     }
 
     @Scheduled(fixedRateString = "${app.scheduled}")
     public void scheduleRatesUpdate() {
         System.out.println("Start refreshing data from fixer");
-        fixerIOService.refreshDataFromFixerIo();
+        currencyService.refreshDataFromFixerIo();
         System.out.println("Task performed on: " + new Date());
     }
 }

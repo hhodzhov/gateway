@@ -5,7 +5,7 @@ import com.hhodzhov.gateway.client.FixerIOClient;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
 import com.hhodzhov.gateway.enumeration.BaseRate;
 import com.hhodzhov.gateway.model.Currency;
-import com.hhodzhov.gateway.repository.FixerIoRepository;
+import com.hhodzhov.gateway.repository.CurrencyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import lombok.Setter;
@@ -17,16 +17,16 @@ import java.util.Optional;
 
 @Service
 @Setter
-public class FixerIoServiceImpl implements FixerIOService {
+public class CurrencyServiceImpl implements CurrencyService {
 
     private ModelMapper modelMapper;
-    private FixerIoRepository fixerIoRepository;
+    private CurrencyRepository currencyRepository;
     private FixerIOClient fixerIOClient;
 
-    public FixerIoServiceImpl(final ModelMapper modelMapper, final FixerIoRepository fixerIoRepository,
-                              final FixerIOClient fixerIOClient) {
+    public CurrencyServiceImpl(final ModelMapper modelMapper, final CurrencyRepository currencyRepository,
+                               final FixerIOClient fixerIOClient) {
         this.modelMapper = modelMapper;
-        this.fixerIoRepository = fixerIoRepository;
+        this.currencyRepository = currencyRepository;
         this.fixerIOClient = fixerIOClient;
     }
 
@@ -36,18 +36,18 @@ public class FixerIoServiceImpl implements FixerIOService {
 
         if (currencyDTO != null) {
             Currency currency = createCurrency(currencyDTO);
-            fixerIoRepository.save(currency);
+            currencyRepository.save(currency);
         }
     }
 
     @Override
     public Optional<Currency> getLatestInfo(BaseRate baseRate) {
-        return fixerIoRepository.getLatestInfoByBaseRate(baseRate.toString());
+        return currencyRepository.getLatestInfoByBaseRate(baseRate.toString());
     }
 
     @Override
     public List<Currency> getHistoryByHours(BaseRate baseRate, int hours) {
-        return fixerIoRepository.getCurrencyHistoryByHours(baseRate.toString(), hours);
+        return currencyRepository.getCurrencyHistoryByHours(baseRate.toString(), hours);
     }
 
     private Currency createCurrency(CurrencyDTO currencyDTO) {
