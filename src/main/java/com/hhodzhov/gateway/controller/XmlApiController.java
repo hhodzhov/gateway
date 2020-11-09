@@ -3,7 +3,7 @@ package com.hhodzhov.gateway.controller;
 import com.hhodzhov.gateway.converter.ApiConverter;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
 import com.hhodzhov.gateway.payload.ApiPayload;
-import com.hhodzhov.gateway.service.JsonApiService;
+import com.hhodzhov.gateway.service.XmlApiService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,25 +15,22 @@ import java.util.stream.Collectors;
 import constants.Endpoints;
 
 @RestController
-@RequestMapping("/json_api")
+@RequestMapping("/xml_api")
 @RequiredArgsConstructor
-public class JsonApiController {
+public class XmlApiController {
 
-    private final JsonApiService jsonApiService;
+    private final XmlApiService xmlApiService;
     private final ApiConverter apiConverter;
 
-    @PostMapping(path = Endpoints.JSON_API_CURRENT,
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public CurrencyDTO getCurrentInfo(@RequestBody ApiPayload apiPayload) {
-        return apiConverter.convert(jsonApiService.getCurrentInfo(apiPayload));
-    }
+    @PostMapping(path = Endpoints.XML_API_COMMAND,
+            consumes = {MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_XML_VALUE})
+    public List<CurrencyDTO> getCurrentInfo(@RequestBody ApiPayload apiPayload) {
+        if (apiPayload.getPeriod() == null) {
+            return List.of(apiConverter.convert(xmlApiService.getCurrentInfo(apiPayload)));
+        }
 
-    @PostMapping(path = Endpoints.JSON_API_HISTORY,
-            consumes = {MediaType.APPLICATION_JSON_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<CurrencyDTO> getHistory(@RequestBody ApiPayload apiPayload) {
-        return jsonApiService.getCurrencyHistory(apiPayload)
+        return xmlApiService.getHistory(apiPayload)
                 .stream()
                 .map(apiConverter::convert)
                 .collect(Collectors.toList());

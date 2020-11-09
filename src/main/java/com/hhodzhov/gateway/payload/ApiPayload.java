@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class JsonApiPayload {
+public class ApiPayload {
 
     @NotNull(message = "Request Id cannot be null")
     private String requestId;
@@ -18,9 +18,8 @@ public class JsonApiPayload {
     @NotNull(message = "Currency cannot be null")
     private BaseRate currency;
 
-    @NotNull(message = "Timestamp cannot be null")
-    private long timestamp;
+    private Long timestamp;
 
-    private int period;
+    private Integer period;
 
 }

@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JsonApiConverter {
+public class ApiConverter {
 
     private final ModelMapper modelMapper;
 
