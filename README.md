@@ -46,16 +46,12 @@ The second service works with Content-type application/xml and has the following
 
 /xml_api/command which accepts POST request with body: 
 
-<ApiPayload>
+<ApiPayload>  
     
     <requestId>b89577fe-8c37-4962-8af3-7cb89a245187</requestId>
-    
     <timestamp>1604951755</timestamp>
-    
     <client>1234</client>
-    
     <currency>EUR</currency>
-    
     <period>1</period>
     
 </ApiPayload>  
