@@ -1,6 +1,6 @@
 package com.hhodzhov.gateway.service;
 
-import static constants.General.DATE_TIME_PATTERN;
+import static com.hhodzhov.gateway.constants.General.DATE_TIME_PATTERN;
 import com.hhodzhov.gateway.client.FixerIOClient;
 import com.hhodzhov.gateway.dto.CurrencyDTO;
 import com.hhodzhov.gateway.enumeration.BaseRate;

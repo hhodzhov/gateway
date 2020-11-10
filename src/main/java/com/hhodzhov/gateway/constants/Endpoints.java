@@ -1,4 +1,4 @@
-package constants;
+package com.hhodzhov.gateway.constants;
 
 public class Endpoints {
     public static final String FIXER_DATA           = "/fixer/data";

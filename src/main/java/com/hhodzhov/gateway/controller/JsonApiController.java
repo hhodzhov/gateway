@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
-import constants.Endpoints;
+import com.hhodzhov.gateway.constants.Endpoints;
 
 @RestController
 @RequestMapping("/json_api")

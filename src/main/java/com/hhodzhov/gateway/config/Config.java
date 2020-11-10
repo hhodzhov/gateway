@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 public class Config {
     @Bean
     public ModelMapper modelMapper() {
+
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
-import constants.Endpoints;
+import com.hhodzhov.gateway.constants.Endpoints;
 
 @RestController
 @RequestMapping("/xml_api")
@@ -26,7 +26,8 @@ public class XmlApiController {
             consumes = {MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_XML_VALUE})
     public List<CurrencyDTO> getCurrentInfo(@RequestBody ApiPayload apiPayload) {
-        if (apiPayload.getPeriod() == null) {
+
+        if (apiPayload != null && apiPayload.getPeriod() == null) {
             return List.of(apiConverter.convert(xmlApiService.getCurrentInfo(apiPayload)));
         }
 
